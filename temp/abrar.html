@@ -282,7 +282,15 @@
                             <a class="a1" href="{% url 'home' %}">Home</a>
                         </div>
                     </li>
-
+                    <li>
+                        <div class="home">
+                            <a class="a1" href="#">Login</a>
+                            <div class="div2">
+                                <a href="{% url 'As an Inspector' %}" class="a2">As an Inspector</a>
+                                <a href="{% url 'As an Municipal Officer' %}" class="a2">As an Municipal Officer</a>
+                            </div>
+                        </div>
+                    </li>
                     <li>
                         <div class="home">
                             <a class="a1" href="#">Road Constructions</a>
@@ -307,21 +315,14 @@
                             <a class="a1" href="about">About Us</a>
                         </div>
                     </li>
-                    <li>
-                        <div class="home">
-                            <a class="a1" href="#">Login</a>
-                            <div class="div2">
-                                <a href="{% url 'As an Inspector' %}" class="a2">As an Inspector</a>
-                                <a href="{% url 'As an Municipal Officer' %}" class="a2">As an Municipal Officer</a>
-                            </div>
-                        </div>
-                    </li>
+
 
                 </ul>
 
             </div>
         </nav>
     </div>
+
     {% if mode == 0 %}
     <div id="slide">
         <div id="carouselExampleInterval" width="35%" height="10%" class="carousel slide" data-ride="carousel">

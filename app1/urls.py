@@ -18,6 +18,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    
   path('',views.home,name='home'),
   path('logini',views.logini,name='As an Inspector'),
   path('loginm',views.loginm,name='As an Municipal Officer'),
@@ -35,6 +36,11 @@ urlpatterns = [
    path('insreq',views.insreq,name="insreq"),
    path('muhome',views.muhome,name='muhome'),
    path('muroad',views.muroad,name='muroad'),
+   path('mucu',views.mucu,name='mucu'),
+   path('mupre',views.mupre,name='mupre'),
    path('about',views.about,name="about"),
    path('contact',views.contact,name="contact"),
 ]
+
+    #  path('muactiontrue/<int:id>/',views.muactiontrue,name="muactiontrue"),
+    #  path('muactionfalse/<int:id>/',views.muactionfalse,name="muactionfalse"),

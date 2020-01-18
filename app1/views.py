@@ -62,9 +62,12 @@ def act(req,type) :
         return redirect('/logini')
       else :
        if MuOff.objects.filter(email=em,passw=pas).exists() :
-        i=MuOff.objects.get(email=em,passw=pas)
-        user.register(False,i)   
-        return render(req,'Mupage.html',{'mode':0})
+         i=MuOff.objects.get(email=em,passw=pas)
+         user.register(False,i)   
+         c1=Construction.objects.filter(status=1)
+         c2=Construction.objects.filter(status=2)
+         c3=Construction.objects.filter(status=3)
+         return render(req,'Mupage.html',{'mode':0,'c1':c1,'c2':c2,'c3':c3,'note1':(c1.count()!=0),'note2':(c2.count()!=0)}) 
        else :
         return redirect('/loginm')
     else : 
@@ -101,9 +104,8 @@ def cons_add(req) :
           r=Road(name=req.POST['road_name'],area=req.POST['area'],city=req.POST['city'],pin=req.POST['pin'],length=req.POST['length'],lane=req.POST['width'])             
           #,image=req.POST['image']
           r.save()
-          if user.isIns and user.log :
-           sc=Road.objects.all() 
-           return render(req,'Inspage.html',{'mode':4,'rd':sc,'note':(sc.count()!=0)}) 
+          sc=Road.objects.all() 
+          return render(req,'Inspage.html',{'mode':4,'rd':sc,'note':(sc.count()!=0)}) 
     else :
         return redirect('/')
 def inconstruct(req,t) :
@@ -128,7 +130,10 @@ def insreq(req) :
     else :
       return redirect('/')            
 def muhome(req) :
-    return render(req,'Mupage.html',{'mode':0}) 
+    c1=Construction.objects.filter(status=1)
+    c2=Construction.objects.filter(status=2)
+    c3=Construction.objects.filter(status=3)
+    return render(req,'Mupage.html',{'mode':0,'c1':c1,'c2':c2,'c3':c3,'note1':(c1.count()!=0),'note2':(c2.count()!=0),'note3':(c3.count()!=0)}) 
 def about(req) :
     return render(req,'aboutus.html')
 def contact(req) :
@@ -136,6 +141,17 @@ def contact(req) :
 def muroad(req) :
     if (not user.isIns) and user.log :
         sc=Road.objects.all() 
-        return render(req,'Mupage.html',{'mode':4,'rd':sc,'note':(sc.count()!=0)}) 
+        al=Construction.objects.all()
+        return render(req,'Mupage.html',{'mode':4,'rd':sc,'con':al,'note':(sc.count()!=0)}) 
     else :
         return redirect('/')  
+def mucu(req) :
+    sc=Schedule.objects.all()
+    return render(req,'Mupage.html',{'cu':sc,'mode':1,'note':(sc.count()!=0)}) 
+def mupre(req) :
+    sc=history.objects.all()
+    return render(req,'Mupage.html',{'cu':sc,'mode':2,'note':(sc.count()!=0)})
+def muactionfalse(req,i) :
+    return HttpResponse("false ")
+def muactiontrue(req,i) :
+    return HttpResponse("true")    

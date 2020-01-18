@@ -168,8 +168,8 @@
             <li>
                 <a href="{% url 'muhome' %}">Home</a>
             </li>
-            <li><a href="{% url 'inspre' %}">Previous Constructions</a></li>
-            <li><a href="{% url 'inscu' %}">Current Constructions</a></li>
+            <li><a href="{% url 'mupre' %}">Previous Constructions</a></li>
+            <li><a href="{% url 'mucu' %}">Current Constructions</a></li>
             <li><a href="{% url 'muroad' %}">Find Roads</a></li>
             <li><a href="{% url 'home' %}">Logout</a></li>
         </ul>
@@ -249,22 +249,76 @@
                 <th>Pin</th>
                 <th>Length</th>
                 <th>Width</th>
+                <th>Status</th>
             </tr>
-            {% for i in rd %}
+            {% for i in con %}
 
             <tr class="tr2">
-                <td>{{i.id}}</td>
-                <td>{{i.name}}</td>
-                <td>{{i.area}}</td>
-                <td>{{i.city}}</td>
-                <td>{{i.pin}}</td>
-                <td>{{i.length}} Km</td>
-                <td>{{i.lane}} Lane</td>
+                <td>{{i.road.id}}</td>
+                <td>{{i.road.name}}</td>
+                <td>{{i.road.area}}</td>
+                <td>{{i.road.city}}</td>
+                <td>{{i.road.pin}}</td>
+                <td>{{i.road.length}} Km</td>
+                <td>{{i.road.lane}} Lane</td>
+                <td>
+                    {% if i.status == 0 %}
+                    <p style="background:green;padding:10px;font-weight:bold;border-radius:10px;color:white;border-style:solid;border-width:2px;border-color:black;">No work</p>
+                    {% elif i.status == 1 %}
+                    <p style="background:purple;padding:10px;font-weight:bold;border-radius:10px;color:white;border-style:solid;border-width:2px;border-color:black;">pending</p>
+                    {% elif i.status == 2 %}
+                    <p style="background:blue;padding:10px;font-weight:bold;border-radius:10px;color:white;border-style:solid;border-width:2px;border-color:black;">work in progress</p>
+                    {% else %}
+                    <p style="background:red;padding:10px;font-weight:bold;border-radius:10px;color:white;border-style:solid;border-width:2px;border-color:black;">hold</p>
+                    {% endif %}
+                </td>
             </tr>
             {% endfor %}
         </table>
         {% else %}
         <h4 style="font-family:georgia;text-align:center;">List is empty</h4>
+        <div class='data'>
+            {% if note %}
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Area</th>
+                    <th>City</th>
+                    <th>Pin</th>
+                    <th>Length</th>
+                    <th>Width</th>
+                    <th>Fund Allocated</th>
+                    <th></th>
+                </tr>
+                {% for i in co %}
+
+                <tr class="tr2">
+                    <td>{{i.road.id}}</td>
+                    <td>{{i.road.name}}</td>
+                    <td>{{i.road.area}}</td>
+                    <td>{{i.road.city}}</td>
+                    <td>{{i.road.pin}}</td>
+                    <td>{{i.road.length}} Km</td>
+                    <td>{{i.road.lane}} Lane</td>
+                    <td>{{i.fund}} crores</td>
+                    <td>
+
+                        {% if i.status == 2 %}
+                        <p style="background:green;padding:10px;font-weight:bold;border-radius:10px;color:white;border-style:solid;border-width:2px;border-color:black;">Accepted</p>
+                        {% elif i.status == 1 %}
+                        <p style="background:purple;padding:10px;font-weight:bold;border-radius:10px;color:white;border-style:solid;border-width:2px;border-color:black;">Pending</p>
+                        {% else %}
+                        <p style="background:red;padding:10px;font-weight:bold;border-radius:10px;color:white;border-style:solid;border-width:2px;border-color:black;">Rejected</p>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% else %}
+            <h4 style="font-family:georgia;text-align:center;">List is empty</h4>
+            {% endif %}
+        </div>
         {% endif %}
     </div>
     {% endif %} {% elif mode == -1 %}
@@ -306,46 +360,104 @@
         </form>
     </div>
     {% elif mode == 0 %}
-    <style>
-        #madd {
-            padding: 20px;
-        }
-        
-        .input1 {
-            padding: 5px;
-            margin-bottom: 10px;
-            margin-left: 10px;
-            text-align: left;
-        }
-        
-        .form {
-            display: block;
-        }
-    </style>
-    <script>
-    </script>
-    <div id="madd">
-        <div>
-            <p style="font-size:18px;color:black;font-family:georgia;">New Road Details</p>
-        </div>
-        <form method="post" action="cons_add">
-            {% csrf_token %}
-            <div class="form">
-                <label for="exampleFormControlInput1">Road name : </label>
-                <input type="text" class="input1" oninput="road_name()" name="road_name" placeholder="xyz road" required /><br>
-                <label for="exampleFormControlInput1">Area      : </label>
-                <input type="text" class="input1" name="area" placeholder="near abc" required/><br>
-                <label for="exampleFormControlInput1">City      : </label>
-                <input type="text" class="input1" name="city" placeholder="xyz" required /><br>
-                <label for="exampleFormControlInput1">Pin Code  : </label>
-                <input type="number" class="input1" name="pin" placeholder="******" required /><br>
-                <label for="exampleFormControlInput1">Road Length :</label>
-                <input type="number" class="input1" name="length" placeholder="x" required /><br>
-                <label for="exampleFormControlInput1">Road Width :</label>
-                <input type="number" class="input1" name="width" placeholder="2" required /><br>
-                <input type="submit" />
-            </div>
-        </form>
+    <h2 class="deta" style="margin-top:20px;">Request from Inspector</h2>
+    <div class='data' style="margin-top:20px;">
+        {% if note1 %}
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Area</th>
+                <th>City</th>
+                <th>Pin</th>
+                <th>Length</th>
+                <th>Width</th>
+                <th>Fund Allocated</th>
+                <th>Request</th>
+            </tr>
+            {% for i in c1 %}
+            <tr class="tr2">
+                <td>{{i.road.id}}</td>
+                <td>{{i.road.name}}</td>
+                <td>{{i.road.area}}</td>
+                <td>{{i.road.city}}</td>
+                <td>{{i.road.pin}}</td>
+                <td>{{i.road.length}} Km</td>
+                <td>{{i.road.lane}} Lane</td>
+                <td>{{i.fund}} crores</td>
+                <td>
+                    <a href="muactiontrue/{{i.id}}/" style="background:green;padding:10px;color:white;border-radius:5px;">Accept</a>
+                    <a href="muactionfalse/{{i.id}}/" style="background:red;padding:10px;color:white;border-radius:5px;">Reject</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <h4 style="font-family:georgia;text-align:center;">List is empty</h4>
+        {% endif %}
+    </div>
+    <h2 class="deta" style="margin-top:20px;">Request which is Accepted</h2>
+    <div class='data' style="margin-top:20px;">
+        {% if note2 %}
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Area</th>
+                <th>City</th>
+                <th>Pin</th>
+                <th>Length</th>
+                <th>Width</th>
+                <th>Fund Allocated</th>
+            </tr>
+            {% for i in c2 %}
+            <tr class="tr2">
+                <td>{{i.road.id}}</td>
+                <td>{{i.road.name}}</td>
+                <td>{{i.road.area}}</td>
+                <td>{{i.road.city}}</td>
+                <td>{{i.road.pin}}</td>
+                <td>{{i.road.length}} Km</td>
+                <td>{{i.road.lane}} Lane</td>
+                <td>{{i.fund}} crores</td>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <h4 style="font-family:georgia;text-align:center;">List is empty</h4>
+        {% endif %}
+    </div>
+    <h2 class="deta" style="margin-top:20px;">Request which is Rejected</h2>
+    <div class='data' style="margin-top:20px;">
+        {% if note3 %}
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Area</th>
+                <th>City</th>
+                <th>Pin</th>
+                <th>Length</th>
+                <th>Width</th>
+                <th>Fund Allocated</th>
+            </tr>
+            {% for i in c3 %}
+            <tr class="tr2">
+                <td>{{i.road.id}}</td>
+                <td>{{i.road.name}}</td>
+                <td>{{i.road.area}}</td>
+                <td>{{i.road.city}}</td>
+                <td>{{i.road.pin}}</td>
+                <td>{{i.road.length}} Km</td>
+                <td>{{i.road.lane}} Lane</td>
+                <td>{{i.fund}} crores</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <h4 style="font-family:georgia;text-align:center;">List is empty</h4>
+        {% endif %}
     </div>
     {% else %}
     <div id="cu_details">
@@ -372,7 +484,6 @@
                     <th>Fund Allocated</th>
                 </tr>
                 {% for i in co %}
-
                 <tr class="tr2">
                     <td>{{i.road.id}}</td>
                     <td>{{i.road.name}}</td>
