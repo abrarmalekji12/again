@@ -27,20 +27,19 @@
     .a1 {
         text-decoration: none;
         text-align: center;
-        font-size: 110%;
+        font-size: 17px;
         color: white;
         padding: 10px;
-        border-top-left-radius: 5px;
-        border-top-right-radius: 5px;
+        border-radius: 5px;
     }
     
     .a2 {
-        text-align: center;
+        text-align: left;
         text-decoration: none;
         display: block;
         position: relative;
-        color: white;
-        font-size: 17px;
+        color: black;
+        font-size: 15px;
         padding: 4px 10px;
     }
     
@@ -48,11 +47,22 @@
         visibility: visible;
     }
     
-    #ul1 a:hover {
-        background-color: white;
-        color: gray;
-        padding: 10px;
+    .a2:hover {
+        background-color: #d3d3d3;
         text-decoration: none;
+        color: black;
+    }
+    
+    .a2:active {
+        background-color: black;
+        text-decoration: none;
+        color: white;
+    }
+    
+    .a1:hover {
+        background-color: white;
+        text-decoration: none;
+        color: black;
     }
     
     #ul1 li {
@@ -63,9 +73,9 @@
     #h11 {
         position: relative;
         color: white;
-        font-size: 170%;
-        padding: 1%;
+        font-size: 150%;
         text-align: center;
+        font-family: georgia;
         margin: auto;
     }
     
@@ -74,7 +84,6 @@
         position: relative;
         align-content: center;
         width: 100%;
-        height: 12%;
         text-align: center;
         z-index: 34;
     }
@@ -87,13 +96,15 @@
     }
     
     .div2 {
-        padding: 10px;
         display: block;
-        text-align: center;
-        background-color: gray;
+        text-align: left;
+        background-color: white;
         position: absolute;
         visibility: hidden;
         z-index: 60;
+        border-width: 2px;
+        border-color: black;
+        width: 200px;
     }
     
     #title {
@@ -101,50 +112,163 @@
         border-color: white;
         border-radius: 10px;
         border-style: solid;
-        border-width: 5px;
+        border-width: 2px;
         align-content: center;
         padding: 10px;
         margin-top: 2%;
         text-align: right;
+        width: 300px;
     }
     
     #slide {
-        padding: 50px;
+        padding: 1px;
+        background: #282828;
         position: relative;
-        width: 100%;
-        height: 60%;
-        left: 0%;
+        width: 45%;
+        height: 25%;
+        margin-top: 50px;
+        border-radius: 15px;
+        margin-left: 20px;
+    }
+    
+    #cu_details {
+        display: block;
+        font-weight: 100px;
+        font-family: arial;
+    }
+    
+    #slide div {
+        border-radius: 15px;
     }
     
     #logo {
-        width: 7;
-        height: 7%;
-        margin-top: 5px;
+        width: 35px;
+        height: 35px;
     }
     
     .nav1 {
         background: #282828;
     }
+    
+    .data {
+        position: relative;
+        padding: 10px;
+        margin: 10px;
+        font-family: georgia;
+        font-size: 20px;
+        margin-bottom: auto;
+    }
+    
+    table tr td {
+        padding: 30px;
+        margin: 30px;
+        text-align: center;
+        background: white;
+        color: black;
+    }
+    
+    table tr {
+        display: table-row;
+        text-align: center;
+    }
+    
+    .tr2 :hover {
+        background: #d3d3d3;
+    }
+    
+    #srch {
+        position: relative;
+        font-size: 20px;
+        color: black;
+        margin-top: auto;
+        background: white;
+        border-radius: 5px;
+        font-family: monospace;
+    }
+    
+    .deta {
+        font-size: 25px;
+        color: black;
+        font-family: georgia;
+        text-align: center;
+    }
+    
+    #cat {
+        padding: 10px;
+        margin: 10px;
+        color: black;
+        font-family: casual;
+        border-radius: 5px;
+        font-size: 18px;
+    }
+    
+    table {
+        text-align: center;
+        border: 2px solid black;
+        margin: auto;
+    }
 </style>
 <script>
     var z = 0;
+    var t = "road";
     $('.carousel').carousel();
 
-    function fun() {
-        /*      var t = document.documentElement.scrollTop;
-              z = (t < 0) ? 0 : t;
-              if (z > 1 && z < 99) {
-                  var c = document.getElementById('div3');
-                  c.style.marginLeft = ((z * 2) - 3) + "pt";
-              } else {
-                  var c = document.getElementById('div1');
-                  c.style.height = ((int)(17 / z)) + "pt";
-              }
-          */
+    function funs() {
+        var a = document.getElementById('cat');
+        t = a.value;
     }
+
+    function fun() {
+        var e = document.getElementById('srch')
+        var data = document.getElementsByTagName('tr')
+        var input = e.value;
+        var flag = false;
+        for (var i = 1; i < data.length; i++) {
+            var s;
+            switch (t) {
+                case 'road':
+                    s = data[i].children[1].innerHTML;
+                    break;
+                case 'city':
+                    s = data[i].children[3].innerHTML;
+                    break;
+                case 'area':
+                    s = data[i].children[2].innerHTML;
+                    break;
+                case 'pin':
+                    s = data[i].children[4].innerHTML;
+                    break;
+                case 'date':
+                    s = data[i].children[8].innerHTML;
+                    break;
+            }
+            s = s.toLowerCase()
+            input = input.toLowerCase()
+            if (!s.startsWith(input))
+                data[i].style.display = "none";
+            else {
+                data[i].style.display = "table-row";
+                flag = true;
+            }
+        }
+        if (!flag)
+            data[0].style.display = "none";
+        else
+            data[0].style.display = "table-row";
+    }
+    /*      var t = document.documentElement.scrollTop;
+          z = (t < 0) ? 0 : t;
+          if (z > 1 && z < 99) {
+              var c = document.getElementById('div3');
+              c.style.marginLeft = ((z * 2) - 3) + "pt";
+          } else {
+              var c = document.getElementById('div1');
+              c.style.height = ((int)(17 / z)) + "pt";
+          }
+      */
 </script>
 
-<body onscroll="fun()">
+<body>
     <div id="div1">
         <nav class="nav1" style="height:200px;width:100%;">
             <div id="title">
@@ -155,20 +279,32 @@
                 <ul id="ul1">
                     <li>
                         <div class="home">
-                            <a class="a1" href="#">Home</a>
+                            <a class="a1" href="{% url 'home' %}">Home</a>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="home">
+                            <a class="a1" href="#">Road Constructions</a>
                             <div class="div2">
-                                {% for j in home %}
-                                <a href="#" class="a2">{{j}}</a> {% endfor %}
+                                <a href="{% url 'cudetails' %}" class="a2">Current Details</a>
+                                <a href="{% url 'predetails' %}" class="a2">Previous Details</a>
                             </div>
                         </div>
                     </li>
                     <li>
                         <div class="home">
-                            <a class="a1" href="#">Details</a>
-                            <div class="div2">
-                                {% for j in details %}
-                                <a href="#" class="a2">{{j}}</a> {% endfor %}
-                            </div>
+                            <a class="a1" href="#">Contract</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="home">
+                            <a class="a1" href="contact">Contact Us</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="home">
+                            <a class="a1" href="about">About Us</a>
                         </div>
                     </li>
                     <li>
@@ -180,11 +316,13 @@
                             </div>
                         </div>
                     </li>
+
                 </ul>
+
             </div>
         </nav>
-
     </div>
+    {% if mode == 0 %}
     <div id="slide">
         <div id="carouselExampleInterval" width="35%" height="10%" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
@@ -192,16 +330,16 @@
                     <img src="{% static 'cleanimg.png' %}" width="250px" height="250px" class="d-block w-100" alt="aa">
                 </div>
                 <div class="carousel-item" data-interval="1000">
-                    <img src="{% static 'road.jpg' %}" width="250px" height="200px" class="d-block w-100" alt="...">
+                    <img src="{% static 'road.jpg' %}" width="250px" height="250px" class="d-block w-100" alt="...">
                 </div>
                 <div class="carousel-item">
-                    <img src="{% static 'gujgov.jpg' %}" width="250px" height="200px" class="d-block w-100" alt="...">
+                    <img src="{% static 'gujgov.jpg' %}" width="250px" height="250px" class="d-block w-100" alt="...">
                 </div>
                 <div class="carousel-item">
-                    <img src="{% static '1-1.jpg' %}" width="250px" height="200px" class="d-block w-100" alt="...">
+                    <img src="{% static '1-1.jpg' %}" width="250px" height="250px" class="d-block w-100" alt="...">
                 </div>
                 <div class="carousel-item">
-                    <img src="{% static 'dreamstime_s_89405525.jpg' %}" width="250px" height="200px" class="d-block w-100" alt="...">
+                    <img src="{% static 'dreamstime_s_89405525.jpg' %}" width="250px" height="250px" class="d-block w-100" alt="...">
                 </div>
             </div>
             <a class="carousel-control-prev" href="#carouselExampleInterval" role="button" data-slide="prev">
@@ -214,8 +352,63 @@
             </a>
         </div>
     </div>
+    {% else %} {% block abrar %}
+    <div id="cu_details">
+        <b>Search by </b><select id="cat" onchange="funs()">
+            <option>road</option>
+            <option>city</option>
+            <option>area</option>
+            <option>pin</option>
+            <option>date</option>
+        </select>
+        <input id="srch" type="text" placeholder="Search.." oninput="fun()"> {% if mode == 1 %}
+        <h2 class="deta">Current Constructions</h2>
+        {% else %}
+        <h2 class="deta">Previous Constructions</h2>
+        {% endif %}
+    </div>
+    <div class='data'>
+        {% if note %}
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Area</th>
+                <th>City</th>
+                <th>Pin</th>
+                <th>Length</th>
+                <th>Width</th>
+                <th>Fund Allocated</th>
+                {% if mode is 1 %}
+                <th>Starting date</th>
+                {% else %}
+                <th>Completion date</th>
+                {% endif %}
+            </tr>
+            {% for i in cu %}
 
-
+            <tr class="tr2">
+                <td>{{i.construction.road.id}}</td>
+                <td>{{i.construction.road.name}}</td>
+                <td>{{i.construction.road.area}}</td>
+                <td>{{i.construction.road.city}}</td>
+                <td>{{i.construction.road.pin}}</td>
+                <td>{{i.construction.road.length}} Km</td>
+                <td>{{i.construction.road.lane}} Lane</td>
+                <td>{{i.construction.fund}} crores</td>
+                {% if mode is 1 %}
+                <td>{{i.start_date}}</td>
+                {% else %}
+                <td>{{i.finish_date}}</td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <h4 style="font-family:georgia;text-align:center;">List is empty</h4>
+        {% endif %}
+    </div>
+    {% endblock %} {% endif %}
 </body>
 
 </html>

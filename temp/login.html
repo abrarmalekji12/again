@@ -27,7 +27,7 @@
         {% else %}
         <h3 class="he">Login for Municipal Officer</h3>
         {% endif %}
-        <form method="POST" action="action1">
+        <form method="POST" action="action/{{act}}/">
             {% csrf_token %}
             <div class="form-group">
                 <label for="exampleInputEmail1">Email address</label>

@@ -1,0 +1,417 @@
+ {% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        #title {
+            text-align: left;
+            font-size: 25px;
+            color: white;
+            background: #2a1b3d;
+            padding: 20px;
+        }
+        
+        #str {
+            background: #d83f87;
+            display: block;
+        }
+        
+        #str ul {
+            display: inline-flex;
+            list-style: none;
+        }
+        
+        #str li {
+            display: block;
+            padding: 5px 10px;
+            color: white;
+            font-size: 20px;
+            text-align: center;
+            margin-right: 50px;
+            border-radius: 5px;
+        }
+        
+        #str a {
+            color: white;
+            text-decoration: none;
+        }
+        
+        #str li:hover {
+            color: white;
+            background: #44318d;
+        }
+        
+        #str li:active {
+            color: white;
+            background: #44318d;
+            padding: 0x 10px;
+        }
+        
+        #cu_details {
+            display: block;
+            font-weight: 100px;
+            font-family: arial;
+        }
+        
+        table tr td {
+            padding: 30px;
+            margin: 30px;
+            text-align: center;
+            background: white;
+            color: black;
+        }
+        
+        table tr {
+            display: table-row;
+            text-align: center;
+        }
+        
+        .tr2 :hover {
+            background: #d3d3d3;
+        }
+        
+        #srch {
+            position: relative;
+            font-size: 20px;
+            color: black;
+            margin-top: auto;
+            background: white;
+            border-radius: 5px;
+            font-family: georgia;
+        }
+        
+        .deta {
+            font-size: 25px;
+            color: black;
+            font-family: georgia;
+            text-align: center;
+        }
+        
+        #cat {
+            padding: 10px;
+            margin: 10px;
+            color: black;
+            font-family: casual;
+            border-radius: 5px;
+            font-size: 18px;
+        }
+        
+        table {
+            text-align: center;
+            border: 2px solid black;
+            margin: auto;
+        }
+    </style>
+    <script>
+        var z = 0;
+        var t = "road";
+        $('.carousel').carousel();
+
+        function funs() {
+            var a = document.getElementById('cat');
+            t = a.value;
+        }
+
+        function fun() {
+            var e = document.getElementById('srch')
+            var data = document.getElementsByTagName('tr')
+            var input = e.value;
+            var flag = false;
+            for (var i = 1; i < data.length; i++) {
+                var s;
+                switch (t) {
+                    case 'road':
+                        s = data[i].children[1].innerHTML;
+                        break;
+                    case 'city':
+                        s = data[i].children[3].innerHTML;
+                        break;
+                    case 'area':
+                        s = data[i].children[2].innerHTML;
+                        break;
+                    case 'pin':
+                        s = data[i].children[4].innerHTML;
+                        break;
+                    case 'date':
+                        s = data[i].children[8].innerHTML;
+                        break;
+                }
+                s = s.toLowerCase()
+                input = input.toLowerCase()
+                if (!s.startsWith(input))
+                    data[i].style.display = "none";
+                else {
+                    data[i].style.display = "table-row";
+                    flag = true;
+                }
+            }
+            if (!flag)
+                data[0].style.display = "none";
+            else
+                data[0].style.display = "table-row";
+        }
+    </script>
+</head>
+
+<body>
+    <h1 id="title">Inspector Work-Bench</h1>
+    <div id="str">
+        <ul>
+            <li>
+                <a href="{% url 'inhome' %}">Home</a>
+            </li>
+            <li><a href="{% url 'inspre' %}">Previous Constructions</a></li>
+            <li><a href="{% url 'inscu' %}">Current Constructions</a></li>
+            <li><a href="{% url 'road_det' %}">Find Roads</a></li>
+            <li><a href="{% url 'insreq' %}">Request</a></li>
+            <li><a href="{% url 'home' %}">Logout</a></li>
+        </ul>
+    </div>
+    {% if mode > 0 %}
+
+    <div id="cu_details">
+        <b>Search by </b><select id="cat" onchange="funs()">
+            <option>road</option>
+            <option>city</option>
+            <option>area</option>
+            <option>pin</option>
+            {% if mode != 4 %}
+            <option>date</option>
+            {% endif %}
+        </select>
+        <input id="srch" type="text" placeholder="Search.." oninput="fun()"> {% if mode == 1 %}
+        <h2 class="deta">Current Constructions</h2>
+        {% elif mode == 2 %}
+        <h2 class="deta">Previous Constructions</h2>
+        {% else %}
+        <h2 class="deta">Road details</h2>
+        {{% endif %}
+    </div>
+    {% if mode != 4 %}
+    <div class='data'>
+        {% if note %}
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Area</th>
+                <th>City</th>
+                <th>Pin</th>
+                <th>Length</th>
+                <th>Width</th>
+                <th>Fund Allocated</th>
+                {% if mode is 1 %}
+                <th>Starting date</th>
+                {% else %}
+                <th>Completion date</th>
+                {% endif %}
+            </tr>
+            {% for i in cu %}
+
+            <tr class="tr2">
+
+                <td>{{i.construction.road.id}}</td>
+                <td>{{i.construction.road.name}}</td>
+                <td>{{i.construction.road.area}}</td>
+                <td>{{i.construction.road.city}}</td>
+                <td>{{i.construction.road.pin}}</td>
+                <td>{{i.construction.road.length}} Km</td>
+                <td>{{i.construction.road.lane}} Lane</td>
+                <td>{{i.construction.fund}} crores</td>
+                {% if mode is 1 %}
+                <td>{{i.start_date}}</td>
+                {% else %}
+                <td>{{i.finish_date}}</td>
+                {% endif %}
+
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <h4 style="font-family:georgia;text-align:center;">List is empty</h4>
+        {% endif %}
+    </div>
+    {% else %}
+    <div class='rdata'>
+        {% if note %}
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Area</th>
+                <th>City</th>
+                <th>Pin</th>
+                <th>Length</th>
+                <th>Width</th>
+                <th> </th>
+            </tr>
+            {% for i in rd %}
+
+            <tr class="tr2">
+                <td>{{i.id}}</td>
+                <td>{{i.name}}</td>
+                <td>{{i.area}}</td>
+                <td>{{i.city}}</td>
+                <td>{{i.pin}}</td>
+                <td>{{i.length}} Km</td>
+                <td>{{i.lane}} Lane</td>
+                <td>
+                    <form method="post" action="inconstruct/{{i.id}}/">{% csrf_token %}<button type="submit">Construct</button></form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <h4 style="font-family:georgia;text-align:center;">List is empty</h4>
+        {% endif %}
+    </div>
+    {% endif %} {% elif mode == -1 %}
+    <style>
+        .wr {
+            font-size: 18px;
+            color: black;
+            font-family: georgia;
+            font-weight: bold;
+        }
+        
+        .he {
+            font-size: 20px;
+            color: white;
+            background: #282828;
+            padding: 15px;
+        }
+        
+        .in3 {
+            padding: 5px;
+            margin: 10px;
+        }
+        
+        #cons {
+            padding: 15px;
+        }
+    </style>
+    <h2 class="he">Add constructions details for selected Road</h2>
+    <div id="cons">
+        <p class="wr">Road name : {{sr.name}}</p>
+        <p class="wr">City : {{sr.city}}</p>
+        <p class="wr">Pin code : {{sr.pin}}</p>
+        <form method="POST" action="{% url 'insfinal' %}">
+            {% csrf_token %}
+            <label for="exampleFormControlInput1">Expected Cost</label>
+            <input type="number" name="fund" class="in3" required/><br>
+            <!-- <input type="file" name="image" class="in3" required/><br> -->
+            <input type="submit" />
+        </form>
+    </div>
+    {% elif mode == 0 %}
+    <style>
+        #madd {
+            padding: 20px;
+        }
+        
+        .input1 {
+            padding: 5px;
+            margin-bottom: 10px;
+            margin-left: 10px;
+            text-align: left;
+        }
+        
+        .form {
+            display: block;
+        }
+    </style>
+    <script>
+        function road_name() {
+            var a = document.getElementsByName('road_name')
+
+        }
+    </script>
+    <div id="madd">
+        <div>
+            <p style="font-size:18px;color:black;font-family:georgia;">New Road Details</p>
+        </div>
+        <form method="post" action="cons_add">
+            {% csrf_token %}
+            <div class="form">
+                <label for="exampleFormControlInput1">Road name : </label>
+                <input type="text" class="input1" oninput="road_name()" name="road_name" placeholder="xyz road" required /><br>
+                <label for="exampleFormControlInput1">Area      : </label>
+                <input type="text" class="input1" name="area" placeholder="near abc" required/><br>
+                <label for="exampleFormControlInput1">City      : </label>
+                <input type="text" class="input1" name="city" placeholder="xyz" required /><br>
+                <label for="exampleFormControlInput1">Pin Code  : </label>
+                <input type="number" class="input1" name="pin" placeholder="******" required /><br>
+                <label for="exampleFormControlInput1">Road Length :</label>
+                <input type="number" class="input1" name="length" placeholder="x" required /><br>
+                <label for="exampleFormControlInput1">Road Width :</label>
+                <input type="number" class="input1" name="width" placeholder="2" required /><br>
+                <input type="submit" />
+            </div>
+        </form>
+    </div>
+    {% else %}
+    <div id="cu_details">
+        <b>Search by </b>
+        <select id="cat" onchange="funs()">
+            <option>road</option>
+            <option>city</option>
+            <option>area</option>
+            <option>pin</option>
+        </select>
+        <input id="srch" type="text" placeholder="Search.." oninput="fun()">
+        <h2 class="deta">Constructions Requested</h2>
+        <div class='data'>
+            {% if note %}
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Area</th>
+                    <th>City</th>
+                    <th>Pin</th>
+                    <th>Length</th>
+                    <th>Width</th>
+                    <th>Fund Allocated</th>
+                    <th></th>
+                </tr>
+                {% for i in co %}
+
+                <tr class="tr2">
+                    <td>{{i.road.id}}</td>
+                    <td>{{i.road.name}}</td>
+                    <td>{{i.road.area}}</td>
+                    <td>{{i.road.city}}</td>
+                    <td>{{i.road.pin}}</td>
+                    <td>{{i.road.length}} Km</td>
+                    <td>{{i.road.lane}} Lane</td>
+                    <td>{{i.fund}} crores</td>
+                    <td>
+
+                        {% if i.status == 2 %}
+                        <p style="background:green;padding:10px;font-weight:bold;border-radius:10px;color:white;border-style:solid;border-width:2px;border-color:black;">Accepted</p>
+                        {% elif i.status == 1 %}
+                        <p style="background:purple;padding:10px;font-weight:bold;border-radius:10px;color:white;border-style:solid;border-width:2px;border-color:black;">Pending</p>
+                        {% else %}
+                        <p style="background:red;padding:10px;font-weight:bold;border-radius:10px;color:white;border-style:solid;border-width:2px;border-color:black;">Rejected</p>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% else %}
+            <h4 style="font-family:georgia;text-align:center;">List is empty</h4>
+            {% endif %}
+        </div>
+
+    </div>
+    {% endif %}
+</body>
+
+</html>
